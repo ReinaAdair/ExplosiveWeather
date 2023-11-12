@@ -128,31 +128,49 @@ class MineSweeperBoard():
 
   "-When the player selects a square that does not have a bomb or is next to one, Bomb_data == 0,"
   "The remaining touching squares are removed until squares touching bombs are revealed"
+  "V4.2 - fixed a big logic error, the the func does not reveal the squares on the 'outer edge' of the cleared area that has bomb data/adjacent bombs"
+  "V4.2 - also updated the x, y vars to make more sense for sense in reference to an array"
   #we are asssuming that the coordinates have already been converted into indexes
   @staticmethod
-  def __Board_Bombless_Clear(self, x, y):
+  def __Board_Bombless_Clear(self, row, col):
      #x = rows, y = columns, kinda weird but its makes sense to me
 
      #reveals the current location
-     self.board_Array_Revealed[x][y] = 1
+     self.board_Array_Revealed[row][col] = 1
      
      #checks indexes one "up", "down", "left", "right", if the index exists and there is not a bomb there and the square has not been revealed, recursively call the func 
      #in order to check all bombless squares in section and reveal them
-     if(x + 1 < self.__board_row_length and x + 1 > -1 and self.board_Array[x+1][y] == 0 and self.board_Array_Revealed[x+1][y] != 1):#up, doesnt need x + 1 > -1 but kept it for consistancy
-      self.__Board_Bombless_Clear(self, x+1, y)
-      self.GameData.Score_Manual_Update(5)#updates game score
+     if(row + 1 < self.__board_row_length and row + 1 > -1):#up, doesnt need x + 1 > -1 but kept it for consistancy
+      if(self.board_Array[row+1][col] == 0 and self.board_Array_Revealed[row+1][col] != 1):
+       self.__Board_Bombless_Clear(self, row+1, col)
+       self.GameData.Score_Manual_Update(5)#updates game score
+      else:
+        self.board_Array_Revealed[row+1][col] = 1 #reveals edge
+        self.GameData.Score_Manual_Update(10)
 
-     if(x - 1 < self.__board_row_length and x - 1 > -1 and self.board_Array[x-1][y] == 0 and self.board_Array_Revealed[x-1][y] != 1):#down
-      self.__Board_Bombless_Clear(self, x-1, y)
-      self.GameData.Score_Manual_Update(5)#updates game score
+     if(row - 1 < self.__board_row_length and row - 1 > -1):#down, if index exists
+      if(self.board_Array[row-1][col] == 0 and self.board_Array_Revealed[row-1][col] != 1):
+       self.__Board_Bombless_Clear(self, row-1, col)
+       self.GameData.Score_Manual_Update(5)#updates game score
+      else:
+        self.board_Array_Revealed[row-1][col] = 1 #reveals edge
+        self.GameData.Score_Manual_Update(10)
 
-     if(y - 1 < self.__board_column_length and y - 1 > -1 and self.board_Array[x][y -1] == 0 and self.board_Array_Revealed[x][y-1] != 1):#left
-      self.__Board_Bombless_Clear(self, x, y -1)
-      self.GameData.Score_Manual_Update(5)#updates game score
+     if(col - 1 < self.__board_column_length and col - 1 > -1):#left, if index exists 
+      if(self.board_Array[row][col -1] == 0 and self.board_Array_Revealed[row][col-1] != 1):#if the square is bombless and non revealed
+       self.__Board_Bombless_Clear(self, row, col -1)
+       self.GameData.Score_Manual_Update(5)#updates game score
+      else:
+        self.board_Array_Revealed[row][col-1] = 1 #if it is a 'edge' with bomb data, reveal it
+        self.GameData.Score_Manual_Update(10)
 
-     if(y + 1 < self.__board_row_length and y + 1 > -1 and self.board_Array[x][y+1] == 0 and self.board_Array_Revealed[x][y+1] != 1):#right
-      self.__Board_Bombless_Clear(self, x, y+1)
-      self.GameData.Score_Manual_Update(5)#updates game score
+     if(col + 1 < self.__board_row_length and col + 1 > -1):#right, if index exists 
+      if(self.board_Array[row][col+1] == 0 and self.board_Array_Revealed[row][col+1] != 1):#if the square is bombless and non revealed
+       self.__Board_Bombless_Clear(self, row, col+1)
+       self.GameData.Score_Manual_Update(5)#updates game score
+      else:
+        self.board_Array_Revealed[row][col+1] = 1 #if it is a 'edge' with bomb data, reveal it
+        self.GameData.Score_Manual_Update(10)
 
 
   "-This function takes the players guess and reveals the specified square, If it is a bomb update the "
@@ -290,6 +308,7 @@ class MineSweeperBoard():
 
   "-used to select boards to either start or restart the game. Uses the previous boards arrays to avoid using the same board repeatively,  " 
   "Note: If you want to change the difficulty, change difficulty first and then call this func to make a new board with new difficulty"
+  "V4.2 Also fixed bug where it would reuse old boards"
   def new_board(self):
     #random num used to select board 
     random_board_num = 0
@@ -311,11 +330,13 @@ class MineSweeperBoard():
 
     #keeps generating new board numbers until an unused one is found
     while(True):
-      random_board_num = random.randint(1,3)#new random num
+      random_board_num = random.randint(1,2)#new random num
+      print("random number " + str(random_board_num))#debug
 
       if(self.GameData.difficulty_get() == "Easy"):#easy difficulty boards 
+        print(self.previous_boards_easy)
         if(random_board_num in self.previous_boards_easy):#checks if current board has been used
-          if(len(self.previous_boards_easy) == num_of_easy_boards):#if all boards have been used
+          if(len(self.previous_boards_easy) >= num_of_easy_boards):#if all boards have been used
             self.previous_boards_easy = numpy.array([0])#resets used boards
           else:
            continue #easy board has already been used 
@@ -325,7 +346,7 @@ class MineSweeperBoard():
           break
       else: #hard difficulty boards
         if(random_board_num in self.previous_boards_hard):#checks if current board has been used
-          if(len(self.previous_boards_hard) == num_of_hard_boards):#if all boards have been used
+          if(len(self.previous_boards_hard) >= num_of_hard_boards):#if all boards have been used
             self.previous_boards_hard = numpy.array([0])#resets used boards
           else:
             continue #hard board has already been used 
@@ -335,6 +356,8 @@ class MineSweeperBoard():
           break
 
 
+    print(self.previous_boards_easy)
+    
     #actually sets the board
     if(self.GameData.difficulty_get() == "Easy"):
      match random_board_num: #a case needs to be made for each board preset

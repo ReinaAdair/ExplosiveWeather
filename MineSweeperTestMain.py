@@ -5,9 +5,7 @@ import MineSweeperLibrary as MineSweeperBackEnd
 def main():
     print("main")
     MineSweeperObject = MineSweeperBackEnd.MineSweeperBoard("Easy")
-    #print(MineSweeperBackEnd.MineSweeperBoard.GameData.difficulty_get() + " first main")
-    #test = dude.board_Array[4][4]
-    
+
     while(True):
 
         "You will have to write some kind of func in the GUI end that reads in the two board arrays to show the game board. This would replace this func."
@@ -18,7 +16,7 @@ def main():
         x_coord = int(input("X: "))
         y_coord = int(input("Y: "))
 
-        #loop breakout 
+        #loop breakout
         if (x_coord < 0  or y_coord < 0):
            if(input("Please Enter \'Y\' to restart game." )):
             MineSweeperObject.new_board()#restarts game/new board
