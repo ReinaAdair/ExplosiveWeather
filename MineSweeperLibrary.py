@@ -40,9 +40,19 @@ Board_Revealed_Preset_easy = [[0, 0, 0, 0, 0],[0, 0, 0, 0, 0],[0, 0, 0, 0, 0],[0
 " 0  0  1  1  1  1  1  1"
 Board_Preset_1_hard = [[1, 1, 0, 0, 1, 1, 1, 0], [-1, 1, 1, 1, 2, -1, 1, 0], [2, 2, 2, -1, 3, 2, 2, 1], [-1, 1, 2, -1, 2, 1, -1, 1], [2, 2, 2, 1, 2, 2, 2, 1], [1, -1, 2, 1, 2, -1, 2, 1],[1, 1, 2, -1, 1, 2, -1, 1],[0, 0, 1, 1, 1, 1, 1, 1]]
 
+
+"Board_Preset_2_hard"
+" 0  1  1  1  1  1  1  0"
+" 0  2 -1  2  2 -1  2  0"
+" 1  3 -1  2  2 -1  3  1"
+"-1  4  2  1  1  2  4 -1"
+"-1 -1  3  1  1  3 -1 -1"
+" 2 -1 -1  4  4 -1 -1  2"
+" 1  3 -1 -1 -1 -1  3  1"
+" 0  1  2  3  3  2  1  0"
+Board_Preset_2_hard = [[0, 1, 1, 1, 1, 1, 1, 0],[ 0, 2, -1, 2, 2, -1, 2, 0],[1, 3, -1, 2, 2, -1, 3, 1],[-1, 4, 2, 1, 1, 2, 4, -1],[-1, -1, 3, 1, 1, 3, -1, -1],[2, -1, -1, 4, 4, -1, -1, 2],[1, 3, -1, -1, -1, -1, 3, 1],[0, 1, 2, 3, 3, 2, 1, 0]]
+
 Board_Revealed_Preset_hard = [[0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0]]
-
-
 
 "Class MineSweeperGame - A MinesweeperGame object was added to MineSweeperBoard"
 "-This object encapsulates everything needed to keep track of the current game"
@@ -246,7 +256,7 @@ class MineSweeperBoard():
     while(row < self.__board_row_length):
       while(col < self.__board_column_length):
             #debug print
-            #print("col"+ str(col) + " " + "row" + str(row))
+            #print("col"+ str(col) + " " + "row" + str(row)+ " : " + str(self.board_Array[row][col]))
 
             #if statements to correct spacing due to negative numbers
             if(self.board_Array[row][col] >= 0): # if current board value is positive, add an additional space
@@ -331,10 +341,10 @@ class MineSweeperBoard():
     #keeps generating new board numbers until an unused one is found
     while(True):
       random_board_num = random.randint(1,2)#new random num
-      print("random number " + str(random_board_num))#debug
+      #print("random number " + str(random_board_num))#debug
 
       if(self.GameData.difficulty_get() == "Easy"):#easy difficulty boards 
-        print(self.previous_boards_easy)
+        #print(self.previous_boards_easy) #debug stuff
         if(random_board_num in self.previous_boards_easy):#checks if current board has been used
           if(len(self.previous_boards_easy) >= num_of_easy_boards):#if all boards have been used
             self.previous_boards_easy = numpy.array([0])#resets used boards
@@ -351,12 +361,15 @@ class MineSweeperBoard():
           else:
             continue #hard board has already been used 
         else:#found an acceptable hard board
-          self.previous_boards_hard = numpy.insert(self.previous_boards_hard, 0, random_board_num)#adds to used boards
+          self.previous_boards_hard = numpy.append(self.previous_boards_hard, random_board_num)#adds to used boards
           self.board_Array_Revealed = deepcopy(Board_Revealed_Preset_hard)#resets revealed board, must use imported deepcopy(), otherwise its a shallow copy/point to the same object 
           break
 
 
-    print(self.previous_boards_easy)
+    #debug stuff
+    #print(self.previous_boards_easy)
+    #print(self.previous_boards_hard)
+
     
     #actually sets the board
     if(self.GameData.difficulty_get() == "Easy"):
@@ -372,3 +385,6 @@ class MineSweeperBoard():
         case 1:
          self.board_Array = Board_Preset_1_hard.copy() 
          self.Board_Preset = 1
+        case 2:
+         self.board_Array = Board_Preset_2_hard.copy() 
+         self.Board_Preset = 2

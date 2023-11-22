@@ -19,7 +19,14 @@ def main():
         #loop breakout
         if (x_coord < 0  or y_coord < 0):
            if(input("Please Enter \'Y\' to restart game." )):
+           
+            #change difficulty 
+            MineSweeperObject.GameData.difficulty_set(input("What difficulty? Easy or Hard: -")) 
+            
+            #makes new board
             MineSweeperObject.new_board()#restarts game/new board
+            #print(MineSweeperObject.GameData.difficulty_get())
+
            else:#if they dont want to restart 
             break
         else:#player guess
