@@ -8,6 +8,7 @@ import APICaller as api
 
 
 
+
 #-----theme browser-----
 
 def layoutTheme():
@@ -93,36 +94,37 @@ while True:
 
     if event == 'Easy':
         boardObj = MSLib.MineSweeperBoard("Easy")      #building the object for the board class
-        
+        revealedBoard = MSLib.Board_Revealed_Preset_easy
+        gameBoard = boardObj.board_Array
         break
 
     if event == 'Hard':
         boardObj = MSLib.MineSweeperBoard("Hard")
         row = 8
         column = 8
+        revealedBoard = MSLib.Board_Revealed_Preset_hard
+        gameBoard = boardObj.board_Array
         break
 
 
 window.close()
 
 #copying game board to secondary array to track what has been revealed
-revealedBoard = [row[:] for row in boardObj.board_Array]
+#revealedBoard = [row[:] for row in boardObj.board_Array]
+#revealedBoard = boardObj.board_Array.copy()
 
 #counting how many bombs are in play
 bombCount = 0
 
+flagOn = False
 
 
 for j in range(column):
     for i in range(row):
-        if boardObj.board_Array[i][j] == -1:
+        if gameBoard[i][j] == -1:
             bombCount += 1
 
 
-#secondary board to keep track of revealed spaces
-for j in range(column):
-    for i in range(row):
-        revealedBoard[i][j] = 0
 
 
 
@@ -132,7 +134,7 @@ theme = 'BluePurple'
 def layoutMine():
     layout = [
         [sg.Menu(menu_def, )],
-        [sg.Text("Score: " + str(boardObj.GameData.score_get())), sg.Text("Bombs: " + str(bombCount))],
+        [sg.Text("Score: " + str(boardObj.GameData.score_get()), key = 'xxx'), sg.Text("Bombs: " + str(bombCount)), sg.Button('Flag')],
         [[sg.Button('', size=(4, 2), key=(i, j), pad=(0,0)) for j in range(row)] for i in range(column)]     
         ]
     
@@ -150,8 +152,6 @@ def keepCount():
 
 
 #----------------------------main game loop-------------------------------
-
-
 
 
 window = layoutMine() #sg.Window('Minesweeper', layoutMine)
@@ -186,22 +186,35 @@ while True:
         if event != "View themes":
             if event != "Change city":
                 if event != "How to play":
-                    
-                    window[event].update(boardObj.board_Array[event[0]][event[1]], button_color=('white','black')) 
-                    #to visually update the playing board when user clicks 
+                    if event != 'Flag':
 
-                    if boardObj.board_Array[event[0]][event[1]] == -1:         
-                        #breaks the loop if user clicks a bomb and shuts window
-                        boardObj.Win_Loss_Flag = -1
-                        sg.popup("You lost :(",
-                                "Score: " + str(boardObj.GameData.score_get()))
-                        break 
+                        if flagOn == False:
 
-                    if boardObj.board_Array[event[0]][event[1]] != -1:
-                        revealedBoard[event[0]][event[1]] = 1
-    
-                        if (keepCount() + bombCount) == (row * column):
-                            boardObj.Win_Loss_Flag = 1
+                        
+                            window[event].update(gameBoard[event[0]][event[1]], button_color=('white','black')) 
+                            #to visually update the playing board when user clicks 
+
+                            if gameBoard[event[0]][event[1]] == -1:         
+                                #breaks the loop if user clicks a bomb and shuts window
+                                boardObj.Win_Loss_Flag = -1
+                                sg.popup("You lost :(",
+                                        "Score: " + str(boardObj.GameData.score_get()))
+                                break 
+
+                            if gameBoard[event[0]][event[1]] != -1:
+                                revealedBoard[event[0]][event[1]] = 1
+                                boardObj.GameData.Score_Manual_Update(5)
+                                window['xxx'].update('Score: ' + str(boardObj.GameData.score_get()))
+            
+                                if (keepCount() + bombCount) == (row * column):
+                                    boardObj.Win_Loss_Flag = 1
+
+                            
+                            
+
+                        if flagOn == True:
+
+                            window[event].update('X', button_color=('black','white'))
 
                         
                         
@@ -234,11 +247,21 @@ while True:
         #print(city)    
         window3.close()
 
-######################------------#######################temp, change values to reflect info box
+
     if event == "How to play":
         sg.Popup("To play minesweeper, you click a square.",
                  "The number that appears is how many bombs are touching that square!",
                  "But if you click a bomb, you lose! Try to avoid those spots!",
                  "You win once all non-bombs are uncovered.")
+        
+
+
+    if event == 'Flag':
+        if flagOn == False:
+            flagOn = True
+            window[event].update(button_color=('green'))
+        else:
+            flagOn = False
+            window[event].update(button_color=('#122e52'))
 
 
