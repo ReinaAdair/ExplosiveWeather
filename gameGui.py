@@ -30,7 +30,7 @@ def layoutCity():
                [sg.Button("Enter")]]
     return sg.Window('City', layoutZ, finalize=True)
 
-city = "indianapolis"
+api.location = "indianapolis"
 
 
 #temperature, humidity, precipitationProbability, dewPoint, windSpeed
@@ -202,9 +202,12 @@ while True:
                                 break 
 
                             if gameBoard[event[0]][event[1]] != -1:
-                                revealedBoard[event[0]][event[1]] = 1
-                                boardObj.GameData.Score_Manual_Update(5)
-                                window['xxx'].update('Score: ' + str(boardObj.GameData.score_get()))
+
+                                if revealedBoard[event[0]][event[1]] != 1:
+
+                                    revealedBoard[event[0]][event[1]] = 1
+                                    boardObj.GameData.Score_Manual_Update(5)
+                                    window['xxx'].update('Score: ' + str(boardObj.GameData.score_get()))
             
                                 if (keepCount() + bombCount) == (row * column):
                                     boardObj.Win_Loss_Flag = 1
@@ -243,7 +246,7 @@ while True:
             event, values = window3.read()
             if event in (sg.WIN_CLOSED, 'Exit', 'Enter'):
                   break
-            city = values
+            api.location = values
         #print(city)    
         window3.close()
 
