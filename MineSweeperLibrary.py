@@ -12,10 +12,10 @@ from copy import deepcopy
 "Board_Preset_1 Easy"
 "-1  3  2  1  0"
 " 2 -1 -1  1  0"
-" 1  2  2  1  1"
+" 1  2  3  1  1"
 " 1  1  2 -1  1"
 " 1 -1  2  1  1"
-Board_Preset_1_easy = [[-1, 3, 2, 1, 0],[2, -1, -1, 1, 0], [1, 2, 2, 1, 1], [ 1, 1, 2, -1, 1], [1, -1, 2, 1, 1]]
+Board_Preset_1_easy = [[-1, 3, 2, 1, 0],[2, -1, -1, 1, 0], [1, 2, 3, 1, 1], [ 1, 1, 2, -1, 1], [1, -1, 2, 1, 1]]
 
 "Board_Preset_2_easy"
 "-1  2  1  0  0"
@@ -24,6 +24,22 @@ Board_Preset_1_easy = [[-1, 3, 2, 1, 0],[2, -1, -1, 1, 0], [1, 2, 2, 1, 1], [ 1,
 " 2  2  1  0  0"
 "-1  1  0  0  0"
 Board_Preset_2_easy = [[-1, 2, 1, 0, 0],[3,-1, 2, 0, 0],[2,-1, 2, 0, 0],[2, 2, 1, 0, 0],[-1, 1, 0, 0, 0]]
+
+"Board_Preset_3_easy"
+"-1  1  0  0  0"
+" 1  2  1  1  0"
+" 0  1 -1  1  0"
+" 0  1  1  2  1"
+" 0  0  0  1 -1"
+Board_Preset_3_easy = [[-1, 1, 0, 0, 0], [1, 2, 1, 1, 0], [0, 1, -1, 1, 0], [0, 1, 1, 2, 1], [0, 0, 0, 1, -1]]
+
+"Board_Preset_4_easy"
+" 0  0  2 -1  2"
+" 0  0  2 -1  2"
+" 1  2  3  2  1"
+" 1 -1 -1  1  0"
+" 1  2  2  1  0"
+Board_Preset_4_easy = [[0, 0, 2, -1, 2], [0, 0, 2, -1, 2], [1, 2, 3, 2, 1], [1, -1, -1, 1, 0], [1, 2, 2, 1, 0]]
 
 
 Board_Revealed_Preset_easy = [[0, 0, 0, 0, 0],[0, 0, 0, 0, 0],[0, 0, 0, 0, 0],[0, 0, 0, 0, 0],[0, 0, 0, 0, 0]]
@@ -51,6 +67,30 @@ Board_Preset_1_hard = [[1, 1, 0, 0, 1, 1, 1, 0], [-1, 1, 1, 1, 2, -1, 1, 0], [2,
 " 1  3 -1 -1 -1 -1  3  1"
 " 0  1  2  3  3  2  1  0"
 Board_Preset_2_hard = [[0, 1, 1, 1, 1, 1, 1, 0],[ 0, 2, -1, 2, 2, -1, 2, 0],[1, 3, -1, 2, 2, -1, 3, 1],[-1, 4, 2, 1, 1, 2, 4, -1],[-1, -1, 3, 1, 1, 3, -1, -1],[2, -1, -1, 4, 4, -1, -1, 2],[1, 3, -1, -1, -1, -1, 3, 1],[0, 1, 2, 3, 3, 2, 1, 0]]
+
+
+"Board_Preset_3_hard"
+" 1  1  1  0  0  1  1  1"
+" 1 -1  1  0  0  1 -1  1"
+" 2  2  2  0  1  2  2  1"
+" 1 -1  1  1  2 -1  1  0"
+" 1  1  1  1 -1  2  1  0"
+" 0  1  1  2  1  2  1  1"
+" 0  1 -1  1  0  1 -1  1"
+" 0  1  1  1  0  1  1  1"
+Board_Preset_3_hard = [[ 1, 1, 1, 0, 0, 1, 1, 1], [1, -1, 1, 0, 0, 1, -1, 1], [2, 2, 2, 0, 1, 2, 2, 1], [1, -1, 1, 1, 2, -1, 1, 0], [1, 1, 1, 1, -1, 2, 1, 0], [0, 1, 1, 2, 1, 2, 1, 1], [0, 1, -1, 1, 0, 1, -1, 1], [0, 1, 1, 1, 0, 1, 1, 1]]
+
+
+"Board_Preset_4_hard"
+"-1 -1 -1 -1 -1 -1 -1 -1"
+"-1 -1 -1 -1 -1 -1 -1 -1"
+"-1 -1 -1 -1  5  3  5 -1"
+"-1 -1 -1 -1  3  0  3 -1"
+"-1 -1 -1 -1  5  3  5 -1"
+"-1 -1 -1 -1 -1 -1 -1 -1"
+"-1 -1 -1 -1 -1 -1 -1 -1"
+"-1 -1 -1 -1 -1 -1 -1 -1"
+Board_Preset_4_hard = [[-1, -1, -1, -1, -1, -1, -1, -1], [-1, -1, -1, -1, -1, -1, -1, -1], [-1, -1, -1, -1, 5, 3, 5, -1], [-1, -1, -1, -1, 3, 0, 3, -1], [-1, -1, -1, -1, 5, 3, 5, -1], [-1, -1, -1, -1, -1, -1, -1, -1], [-1, -1, -1, -1, -1, -1, -1, -1], [-1, -1, -1, -1, -1, -1, -1, -1]]
 
 Board_Revealed_Preset_hard = [[0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0],[0, 0, 0, 0, 0, 0, 0, 0]]
 
@@ -334,13 +374,13 @@ class MineSweeperBoard():
 
 
     #holds number of easy boards so that we know when to reset prvious boards 
-    num_of_easy_boards = 2 + 1 #since the array cant be empty, add one for the array index that is never empty
+    num_of_easy_boards = 4 + 1 #since the array cant be empty, add one for the array index that is never empty
     #akin to num_of_easy_boards
-    num_of_hard_boards = 1 + 1
+    num_of_hard_boards = 4 + 1
 
     #keeps generating new board numbers until an unused one is found
     while(True):
-      random_board_num = random.randint(1,2)#new random num
+      random_board_num = random.randint(1,4)#new random num
       #print("random number " + str(random_board_num))#debug
 
       if(self.GameData.difficulty_get() == "Easy"):#easy difficulty boards 
@@ -380,6 +420,12 @@ class MineSweeperBoard():
        case 2:
          self.board_Array = Board_Preset_2_easy.copy()
          self.Board_Preset = 2
+       case 3:
+         self.board_Array = Board_Preset_3_easy.copy()
+         self.Board_Preset = 3
+       case 4:
+         self.board_Array = Board_Preset_4_easy.copy()
+         self.Board_Preset = 4
     else:#if difficulty hard
        match random_board_num: #a case needs to be made for each board preset
         case 1:
@@ -388,3 +434,9 @@ class MineSweeperBoard():
         case 2:
          self.board_Array = Board_Preset_2_hard.copy() 
          self.Board_Preset = 2
+        case 3:
+         self.board_Array = Board_Preset_3_hard.copy() 
+         self.Board_Preset = 3
+        case 4:
+         self.board_Array = Board_Preset_4_hard.copy() 
+         self.Board_Preset = 4
