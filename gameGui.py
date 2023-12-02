@@ -30,38 +30,52 @@ def layoutCity():
                [sg.Button("Enter")]]
     return sg.Window('City', layoutZ, finalize=True)
 
-api.location = "indianapolis"
+location = "indianapolis"
 
 
-#temperature, humidity, precipitationProbability, dewPoint, windSpeed
-data = api.r
+#temperature, humidity, precipitationProbability, dewPoint, windSpeed#####################################################################
+"""data = api.r
 temp = ''
 hum = ''
 rain = ''
 dew = ''
-wind = ''
+wind = ''"""
 
-for val in data["data"]["values"]:
-    if val == 'dewPoint':
-        dew = data["data"]["values"][val]
-    elif val == 'humidity':
-        hum = data["data"]["values"][val]
-    elif val == 'precipitationProbablity':
-        rain = data["data"]["values"][val]
-    elif val == 'temperature':
-        temp = data["data"]["values"][val]
-    elif val == 'windSpeed':
-        wind = data["data"]["values"][val]
-    #print(val, ": ", data["data"]["values"][val])
+#humidity0, precipitationProbability1, pressureSurfaceLevel2, temperature3, temperatureApparent4, weatherCode5, windSpeed6
 
-layoutWeather = [
-    [sg.Text("Temperature: " + str(temp))],
-    [sg.Text("Humidity: "+ str(hum))],
-    [sg.Text("Rain chance: "+ str(rain))],
-    [sg.Text("Dew point: "+ str(dew))],
-    [sg.Text("Wind speed: "+ str(wind))]
 
-    ]
+#doing it like this to hopefully cut down on calls to the api
+"""def cityData(function):
+    
+    data = function
+    return data"""
+
+
+#data = api.API_Call(location, "imperial")
+
+ 
+pressure = ""
+    
+hum = ""
+    
+rain = ""
+
+temp = ""
+    
+wind = ""
+    
+
+def layoutWeather():
+
+    layoutWea = [#################################################################################################################
+        [sg.Text("Temperature: ", key='-tempd-')],
+        [sg.Text("Humidity: ", key='-humd-')],
+        [sg.Text("Rain chance: ", key='-raind-')],
+        [sg.Text("Pressure level: ", key='-pressd-')],
+        [sg.Text("Wind speed: ", key='-windd-')]
+
+        ]
+    return sg.Window('Weather', layoutWea, resizable=True, finalize=True)
 
 
 #menu bar for main window
@@ -171,9 +185,37 @@ while True:
             break
         window.close()
 
-        window4 = sg.Window('test', layoutWeather)
+
+        data = api.API_Call(location, "imperial")
+        pressure = data[2]  
+        hum = data[0]               
+        rain = data[1]
+        temp = data[3]
+        wind = data[6]
+
+        #print(data)
+        print(str(hum) + "test")
+
+        
+        window4 = layoutWeather()
+        window4['-tempd-'].update("Temperature: " + str(temp))
+        window4['-humd-'].update("Humidity: "+ str(hum))
+        window4['-raind-'].update("Rain chance: "+ str(rain))
+        window4['-pressd-'].update("Pressure level: "+ str(pressure))
+        window4['-windd-'].update("Wind speed: "+ str(wind))
+        
+
         while True:
+            
             event, values = window4.read()
+
+            
+
+            """window4['-tempd-'].update("Temperature: " + str(temp))
+            window4['-humd-'].update("Humidity: "+ str(hum))
+            window4['-raind-'].update("Rain chance: "+ str(rain))
+            window4['-pressd-'].update("Pressure level: "+ str(pressure))
+            window4['-windd-'].update("Wind speed: "+ str(wind))"""
             if event in (sg.WIN_CLOSED, 'Exit', 'Enter'):
                   break
         window4.close()
@@ -246,7 +288,13 @@ while True:
             event, values = window3.read()
             if event in (sg.WIN_CLOSED, 'Exit', 'Enter'):
                   break
-            api.location = values
+            location = values
+            """data = api.API_Call(location, "imperial")
+            pressure = data[2]  
+            hum = data[0]               
+            rain = data[1]
+            temp = data[3]
+            wind = data[6]"""
         #print(city)    
         window3.close()
 
@@ -255,7 +303,7 @@ while True:
         sg.Popup("To play minesweeper, you click a square.",
                  "The number that appears is how many bombs are touching that square!",
                  "But if you click a bomb, you lose! Try to avoid those spots!",
-                 "You win once all non-bombs are uncovered.")
+                 "You win once all non-bombs are uncovered and you click 'flag'.")
         
 
 
