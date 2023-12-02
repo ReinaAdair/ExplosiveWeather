@@ -194,7 +194,7 @@ while True:
         wind = data[6]
 
         #print(data)
-        print(str(hum) + "test")
+        #print(str(hum) + "test")
 
         
         window4 = layoutWeather()
