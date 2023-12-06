@@ -21,7 +21,8 @@ def Prebuilt_API_Call():
 
     try:
         for val in r["data"]["values"]:
-            print(val, ": ", r["data"]["values"][val])
+            pass
+            #print(val, ": ", r["data"]["values"][val])
     except:
         print("An error has occured parsing the JSON")
         print(r)
@@ -66,7 +67,8 @@ def API_Call(loc, un):
 
     try:
         for val in r["data"]["values"]:
-            print(val, ": ", r["data"]["values"][val])
+            pass
+            #print(val, ": ", r["data"]["values"][val])
     except:
         print("An error has occured parsing the JSON")
         print(r)
