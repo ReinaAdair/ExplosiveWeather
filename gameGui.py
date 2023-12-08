@@ -25,7 +25,7 @@ def layoutTheme():
 
 def layoutCity():
 
-    layoutZ = [[sg.Text("Enter your city:")],
+    layoutZ = [[sg.Text("Enter your city or zipcode:")],
                [sg.Input(key='-IN-', enable_events=True)],
                [sg.Button("Enter")]]
     return sg.Window('City', layoutZ, finalize=True)
